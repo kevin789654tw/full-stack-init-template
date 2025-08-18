@@ -17,8 +17,6 @@ services:
       context: ./backend
     image: user_name/project_name-backend:latest
     container_name: fastapi-backend
-    # command: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    command: sh -c "sleep 5 && uvicorn app.main:app --host 0.0.0.0 --port 8000"
     volumes:
       - ./backend:/app
     ports:

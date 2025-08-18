@@ -1,0 +1,36 @@
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+
+# Virtual environments
+venv/
+.env
+.env.local
+
+# Poetry cache
+.poetry/
+.poetry-cache/
+
+# Tests
+tests/
+
+# Git
+.git/
+.gitignore
+
+# Docker/CI
+.dockerignore
+Dockerfile*
+
+# IDE/Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Node/Frontend build
+node_modules/
+dist/
+build/

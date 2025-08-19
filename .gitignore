@@ -1,0 +1,38 @@
+# Allow example files to be versioned
+!example.*
+
+# Local & Secret configuration (do NOT commit)
+config.local.*
+*.local
+*.local.*
+secret.*
+*.secret.*
+
+# Environment variable files
+.env
+.env.*
+!.env.example
+
+# System and editor-specific files
+.DS_Store
+Thumbs.db
+*.sw?
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.vscode/
+# .vscode/*
+# !.vscode/extensions.json
+.code-workspace
+.idea/
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.bak
+
+# Trunk cache and analysis results
+.trunk/
+# !.trunk/trunk.yml

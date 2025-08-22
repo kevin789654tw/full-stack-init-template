@@ -1,0 +1,27 @@
+name: Question
+description: Please submit your question so we can provide help or clarification.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to ask a question!
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: |
+        Provide a clear and detailed description of your question.
+      placeholder: Tell us what you want to know!
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context / Details
+      description: |
+        Provide any relevant context, code snippets, or background information to help us understand your question.
+      placeholder: Tell us any additional details!
+    validations:
+      required: false

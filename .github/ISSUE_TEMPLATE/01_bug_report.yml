@@ -1,0 +1,76 @@
+name: Bug Report
+description: Please file a bug report with details to help us reproduce it.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Describe the bug
+      description: |
+        Provide a clear and detailed description of the bug.
+      placeholder: Tell us what you saw!
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: |
+        Describe what you expected to happen when performing the steps.
+        Be as specific as possible so we can understand the intended behavior.
+      placeholder: Tell us what you expected!
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: |
+        Describe what actually happened instead of the expected behavior.
+        Include any error messages, unexpected outputs, or other issues observed.
+      placeholder: Tell us what actually happened!
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: Reproduction steps
+      description: |
+        Provide a clear, step-by-step description of how to reproduce the bug.
+        Include any commands, inputs, or actions you performed.
+      placeholder: Tell us what you did before the bug occurred!
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: |
+        Copy and paste any relevant log output.
+        This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Provide details about the environment where the bug occurred.
+        Include any relevant information such as:
+          * Operating system or hosting platform (e.g., Windows 11, Ubuntu 22.04, macOS Sonoma 14.7.7, ...)
+          * Programming language version (e.g., Python 3.10, Node 18.17.1 LTS, ...)
+          * Project version or commit hash
+          * Browser and version (if applicable)
+          * Any other dependencies or environment details
+      placeholder: |
+        OS / Platform: ...  
+        Python / Node version: ...  
+        Project version / commit: ...  
+        Browser (if applicable): ...  
+        Additional environment info: ...
+    validations:
+      required: false

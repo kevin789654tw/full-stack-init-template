@@ -34,5 +34,9 @@ logs/
 *.bak
 
 # Trunk cache and analysis results
-.trunk/
-# !.trunk/trunk.yml
+.trunk/**
+!.trunk/trunk.yaml
+!.trunk/checks.yaml
+!.trunk/configs/
+!.trunk/configs/**
+!.trunk/.gitignore

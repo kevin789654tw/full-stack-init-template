@@ -40,6 +40,8 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_MODE: ${VITE_MODE}
     image: ${FRONTEND_IMAGE}
     container_name: ${FRONTEND_CONTAINER}
     ports:

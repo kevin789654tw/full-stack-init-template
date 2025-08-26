@@ -10,14 +10,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 RUN pip install --no-cache-dir "poetry==1.8.3"
 
 COPY pyproject.toml poetry.lock* /app/
-
-RUN poetry export -f requirements.txt --without-hashes --only main -o requirements.txt
-
-RUN pip install --no-cache-dir --target=/install -r requirements.txt
+RUN poetry export -f requirements.txt --without-hashes --only main -o requirements.txt \
+    && pip install --no-cache-dir --target=/install -r requirements.txt
 
 
 # ===== Production Stage =====
@@ -31,14 +28,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 COPY --from=builder /install /usr/local/lib/python3.10/site-packages
-
 COPY . /app
 
 RUN useradd -m appuser && chown -R appuser /app
 USER appuser
 
 EXPOSE 8000
-
 CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

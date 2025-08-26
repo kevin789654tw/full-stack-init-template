@@ -4,19 +4,21 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 ARG VITE_MODE=production
+ARG PACKAGE_MANAGER=npm
 
-# RUN corepack enable   # yarn
-
-COPY package*.json ./
-# COPY package.json yarn.lock ./   # yarn
-
-RUN npm install
-# RUN yarn install --frozen-lockfile   # yarn
+COPY package*.json yarn.lock* ./
+RUN if [ "$PACKAGE_MANAGER" = "npm" ]; then \
+      npm install; \
+    else \
+      corepack enable && yarn install --frozen-lockfile; \
+    fi
 
 COPY . .
-
-RUN npm run build -- --mode $VITE_MODE
-# RUN yarn build -- --mode $VITE_MODE   # yarn
+RUN if [ "$PACKAGE_MANAGER" = "npm" ]; then \
+      npm run build -- --mode $VITE_MODE; \
+    else \
+      yarn build -- --mode $VITE_MODE; \
+    fi
 
 # ===== Production Stage =====
 FROM nginx:1.25-alpine

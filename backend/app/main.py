@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from app.api.routes import router as api_router
+from app.api.item_routes import router as item_router
 from app.db.database import create_db_and_tables
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -38,4 +38,4 @@ def on_startup():
     create_db_and_tables()
 
 
-app.include_router(api_router)
+app.include_router(item_router)

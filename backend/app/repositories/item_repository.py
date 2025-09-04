@@ -70,6 +70,9 @@ class ItemRepository:
 
         Args:
             item (Item): The Item object to delete.
+
+        Returns:
+            None
         """
         with session() as db:
             db.delete(item)

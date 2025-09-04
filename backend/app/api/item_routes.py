@@ -43,11 +43,18 @@ def create_item(item: Item) -> Item:
 
     Args:
         item (Item): The Item object to be created.
+                     'name' and 'description' cannot be empty or only whitespaces.
+
+    Raises:
+        HTTPException: If validation fails (400).
 
     Returns:
         Item: The newly created Item object.
     """
-    return ItemService.create_item(item)
+    try:
+        return ItemService.create_item(item)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.put("/items/{item_id}", response_model=Item)
@@ -58,9 +65,10 @@ def update_item(item_id: int, item: Item) -> Item:
     Args:
         item_id (int): The ID of the item to update.
         item (Item): The updated Item data.
+                     'name' and 'description' cannot be empty or only whitespaces.
 
     Raises:
-        HTTPException: If the item does not exist (404).
+        HTTPException: If the item does not exist (404) or validation fails (400).
 
     Returns:
         Item: The updated Item object.
@@ -69,7 +77,10 @@ def update_item(item_id: int, item: Item) -> Item:
     if not existing_item:
         raise HTTPException(status_code=404, detail="Item not found")
     item.id = item_id
-    return ItemService.update_item(item)
+    try:
+        return ItemService.update_item(item)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.delete("/items/{item_id}")

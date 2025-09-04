@@ -3,7 +3,26 @@ from app.repositories.item_repository import ItemRepository
 
 
 class ItemService:
-    """Service layer for Item business logic."""
+    """Service layer handling operations and rules related to Items."""
+
+    @staticmethod
+    def _validate_item(item: Item):
+        """
+        Validate rules: name and description cannot be blank or only whitespaces.
+
+        Args:
+            item (Item): The Item instance to validate.
+
+        Raises:
+            ValueError: If the item name or description is empty or only whitespaces.
+
+        Returns:
+            None
+        """
+        if not item.name.strip():
+            raise ValueError("Item name cannot be empty or only whitespaces")
+        if not item.description.strip():
+            raise ValueError("Item description cannot be empty or only whitespaces")
 
     @staticmethod
     def list_items() -> list[Item]:
@@ -31,27 +50,35 @@ class ItemService:
     @staticmethod
     def create_item(item: Item) -> Item:
         """
-        Create a new item via repository layer.
+        Validate and create a new item via repository layer.
 
         Args:
             item (Item): The Item object to be created.
 
+        Raises:
+            ValueError: If the item name or description is empty or only whitespaces.
+
         Returns:
             Item: The newly created Item object.
         """
+        ItemService._validate_item(item)
         return ItemRepository.create(item)
 
     @staticmethod
     def update_item(item: Item) -> Item:
         """
-        Update an existing item via repository layer.
+        Validate and update an existing item via repository layer.
 
         Args:
             item (Item): The Item object with updated data.
 
+        Raises:
+            ValueError: If the item name or description is empty or only whitespaces.
+
         Returns:
             Item: The updated Item object.
         """
+        ItemService._validate_item(item)
         return ItemRepository.update(item)
 
     @staticmethod
@@ -61,5 +88,8 @@ class ItemService:
 
         Args:
             item (Item): The Item object to delete.
+
+        Returns:
+            None
         """
         ItemRepository.delete(item)

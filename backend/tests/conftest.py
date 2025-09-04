@@ -10,13 +10,19 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 # test database setup
+# In-memory SQLite engine for isolated tests.
 TEST_DATABASE_URL = "sqlite:///:memory:"
 engine = create_engine(TEST_DATABASE_URL, echo=False)
 
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_db():
-    """Create and drop tables for the test session."""
+    """
+    Setup and teardown the test database for the entire session.
+
+    Yields:
+        None
+    """
     SQLModel.metadata.create_all(engine)
     yield
     SQLModel.metadata.drop_all(engine)
@@ -24,6 +30,11 @@ def setup_db():
 
 @pytest.fixture()
 def db_session():
-    """Provide a database session for each test."""
+    """
+    Provide a new database session for each test.
+
+    Yields:
+        Session: SQLModel database session.
+    """
     with Session(engine) as s:
         yield s

@@ -6,9 +6,9 @@ class ItemService:
     """Service layer handling operations and rules related to Items."""
 
     @staticmethod
-    def _validate_item(item: Item):
+    def _validate_item(item: Item) -> None:
         """
-        Validate rules: name and description cannot be blank or only whitespaces.
+        Validate item name and description are not empty or whitespace.
 
         Args:
             item (Item): The Item instance to validate.
@@ -23,6 +23,23 @@ class ItemService:
             raise ValueError("Item name cannot be empty or only whitespaces")
         if not item.description.strip():
             raise ValueError("Item description cannot be empty or only whitespaces")
+
+    @staticmethod
+    def create_item(item: Item) -> Item:
+        """
+        Validate and create a new item via repository layer.
+
+        Args:
+            item (Item): The Item object to be created.
+
+        Raises:
+            ValueError: If the item name or description is empty or only whitespaces.
+
+        Returns:
+            Item: The newly created Item object.
+        """
+        ItemService._validate_item(item)
+        return ItemRepository.create(item)
 
     @staticmethod
     def list_items() -> list[Item]:
@@ -48,23 +65,6 @@ class ItemService:
         return ItemRepository.get_by_id(item_id)
 
     @staticmethod
-    def create_item(item: Item) -> Item:
-        """
-        Validate and create a new item via repository layer.
-
-        Args:
-            item (Item): The Item object to be created.
-
-        Raises:
-            ValueError: If the item name or description is empty or only whitespaces.
-
-        Returns:
-            Item: The newly created Item object.
-        """
-        ItemService._validate_item(item)
-        return ItemRepository.create(item)
-
-    @staticmethod
     def update_item(item: Item) -> Item:
         """
         Validate and update an existing item via repository layer.
@@ -82,7 +82,7 @@ class ItemService:
         return ItemRepository.update(item)
 
     @staticmethod
-    def delete_item(item: Item):
+    def delete_item(item: Item) -> None:
         """
         Delete an existing item via repository layer.
 

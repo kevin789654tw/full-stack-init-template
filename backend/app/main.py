@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from app.api.item_routes import router as item_router
-from app.db.database import create_db_and_tables
+from app.db.database import Database
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,7 +35,7 @@ app.add_middleware(
 # FastAPI automatically triggers the "startup" event when the app starts.
 @app.on_event("startup")
 def on_startup():
-    create_db_and_tables()
+    Database.create_db_and_tables()
 
 
 app.include_router(item_router)

@@ -5,6 +5,27 @@ from fastapi import APIRouter, HTTPException
 router = APIRouter(prefix="/api", tags=["Items"])
 
 
+@router.post("/items", response_model=Item)
+def create_item(item: Item) -> Item:
+    """
+    Create a new item in the database.
+
+    Args:
+        item (Item): The Item object to be created.
+                     'name' and 'description' cannot be empty or only whitespaces.
+
+    Raises:
+        HTTPException: If validation fails (400).
+
+    Returns:
+        Item: The newly created Item object.
+    """
+    try:
+        return ItemService.create_item(item)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
 @router.get("/items", response_model=list[Item])
 def get_items() -> list[Item]:
     """
@@ -36,27 +57,6 @@ def get_item(item_id: int) -> Item:
     return item
 
 
-@router.post("/items", response_model=Item)
-def create_item(item: Item) -> Item:
-    """
-    Create a new item in the database.
-
-    Args:
-        item (Item): The Item object to be created.
-                     'name' and 'description' cannot be empty or only whitespaces.
-
-    Raises:
-        HTTPException: If validation fails (400).
-
-    Returns:
-        Item: The newly created Item object.
-    """
-    try:
-        return ItemService.create_item(item)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
-
-
 @router.put("/items/{item_id}", response_model=Item)
 def update_item(item_id: int, item: Item) -> Item:
     """
@@ -84,7 +84,7 @@ def update_item(item_id: int, item: Item) -> Item:
 
 
 @router.delete("/items/{item_id}")
-def delete_item(item_id: int):
+def delete_item(item_id: int) -> dict[str, str]:
     """
     Delete an existing item by its ID.
 

@@ -1,40 +1,31 @@
+import os
 import sys
 from pathlib import Path
+from typing import Iterator
 
 import pytest
-from sqlmodel import Session, SQLModel, create_engine
+from app.db.database import Database
+from sqlalchemy.engine import Engine
+from sqlmodel import SQLModel
 
 # add project root to sys.path to avoid import issues
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-# test database setup
-# In-memory SQLite engine for isolated tests.
-TEST_DATABASE_URL = "sqlite:///:memory:"
-engine = create_engine(TEST_DATABASE_URL, echo=False)
+
+@pytest.fixture(autouse=True)
+def set_test_database_url(monkeypatch) -> None:
+    """Automatically set a test DATABASE_URL for all tests."""
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
 
 
-@pytest.fixture(scope="session", autouse=True)
-def setup_db():
-    """
-    Setup and teardown the test database for the entire session.
+@pytest.fixture(autouse=True)
+def setup_db() -> Iterator[Engine]:
+    """Setup and teardown the test database for the entire session."""
+    os.getenv("DATABASE_URL")
+    engine = Database.get_engine()
 
-    Yields:
-        None
-    """
     SQLModel.metadata.create_all(engine)
-    yield
+    yield engine
     SQLModel.metadata.drop_all(engine)
-
-
-@pytest.fixture()
-def db_session():
-    """
-    Provide a new database session for each test.
-
-    Yields:
-        Session: SQLModel database session.
-    """
-    with Session(engine) as s:
-        yield s

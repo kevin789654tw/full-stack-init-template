@@ -1,9 +1,26 @@
-from app.db.database import session
+from app.db.database import Database
 from app.models.item import Item
 
 
 class ItemRepository:
     """Repository layer for Item database operations."""
+
+    @staticmethod
+    def create(item: Item) -> Item:
+        """
+        Create a new item in the database.
+
+        Args:
+            item (Item): The Item object to be created.
+
+        Returns:
+            Item: The newly created Item object.
+        """
+        with Database.session() as db:
+            db.add(item)
+            db.commit()
+            db.refresh(item)
+            return item
 
     @staticmethod
     def list_all() -> list[Item]:
@@ -13,7 +30,7 @@ class ItemRepository:
         Returns:
             list[Item]: A list of all Item objects.
         """
-        with session() as db:
+        with Database.session() as db:
             return db.query(Item).all()
 
     @staticmethod
@@ -27,25 +44,8 @@ class ItemRepository:
         Returns:
             Item | None: The Item object if found, otherwise None.
         """
-        with session() as db:
+        with Database.session() as db:
             return db.query(Item).filter(Item.id == item_id).first()
-
-    @staticmethod
-    def create(item: Item) -> Item:
-        """
-        Create a new item in the database.
-
-        Args:
-            item (Item): The Item object to be created.
-
-        Returns:
-            Item: The newly created Item object.
-        """
-        with session() as db:
-            db.add(item)
-            db.commit()
-            db.refresh(item)
-            return item
 
     @staticmethod
     def update(item: Item) -> Item:
@@ -58,13 +58,13 @@ class ItemRepository:
         Returns:
             Item: The updated Item object.
         """
-        with session() as db:
+        with Database.session() as db:
             db.merge(item)
             db.commit()
             return item
 
     @staticmethod
-    def delete(item: Item):
+    def delete(item: Item) -> None:
         """
         Delete an existing item from the database.
 
@@ -74,6 +74,6 @@ class ItemRepository:
         Returns:
             None
         """
-        with session() as db:
+        with Database.session() as db:
             db.delete(item)
             db.commit()

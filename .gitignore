@@ -12,6 +12,7 @@ secret.*
 .env
 .env.*
 !.env.example
+!.env.test
 
 # System and editor-specific files
 .DS_Store

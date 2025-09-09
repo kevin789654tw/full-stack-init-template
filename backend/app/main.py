@@ -1,41 +1,12 @@
-import os
-from pathlib import Path
-
-from app.api.item_routes import router as item_router
-from app.db.database import Database
-from dotenv import load_dotenv
+from app.core.app import AppFactory
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-
-env_path = Path(__file__).resolve().parents[2] / ".env"  # ./backend/
-load_dotenv(dotenv_path=env_path, override=False)
-
-# read from ./backend/.env
-FRONTEND_URL: str | None = os.getenv("FRONTEND_URL")
-
-if FRONTEND_URL is None:
-    raise ValueError("FRONTEND_URL not set")
-
-app = FastAPI(title="FastAPI Backend with SQLModel")
-
-origins = [
-    FRONTEND_URL,
-    # add URLs of other sub-frontends or environments
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
-# FastAPI automatically triggers the "startup" event when the app starts.
-@app.on_event("startup")
-def on_startup():
-    Database.create_db_and_tables()
+def create_app() -> FastAPI:
+    """
+    Create and configure the FastAPI application.
 
-
-app.include_router(item_router)
+    Returns:
+        FastAPI: Configured FastAPI application instance.
+    """
+    return AppFactory().create_app()

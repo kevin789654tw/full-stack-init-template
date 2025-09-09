@@ -80,11 +80,16 @@ class Database:
         SQLModel.metadata.create_all(custom_engine or cls.get_engine())
 
     @classmethod
-    def session(cls) -> Session:
+    def session(cls, custom_engine: Engine | None = None) -> Session:
         """
         Create and return a new database session using the configured engine.
+
+        Args:
+            custom_engine (Engine | None, optional):
+                A custom SQLAlchemy engine to use.
+                If not provided, the default engine from get_engine() is used.
 
         Returns:
             Session: A SQLModel session object connected to the database engine.
         """
-        return Session(cls.get_engine())
+        return Session(custom_engine or cls.get_engine())

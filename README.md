@@ -49,13 +49,24 @@ Build fullstack-boilerplate from the source and install dependencies:
 
 1. **Clone the repository:**
 
-   ```
+   ```bash
    git clone https://github.com/kevin789654tw/fullstack-boilerplate.git
    ```
 
 2. **Navigate to the project directory:**
-   ```
+
+   ```bash
    cd fullstack-boilerplate
+   ```
+
+3. **Set up environment variables:**
+   ⚠️ (replace placeholders with your own secrets, do not commit sensitive data) ⚠️
+
+   ```bash
+   cp .env.example .env
+   cp backend/.env.example backend/.env
+   cp frontend/.env.example frontend/.env.development
+   cp frontend/.env.example frontend/.env.production  # comment out localhost and uncomment your backend URL
    ```
 
 ### Usage
@@ -63,7 +74,8 @@ Build fullstack-boilerplate from the source and install dependencies:
 Run the project with:
 
 1. **Using [Docker Compose](https://docs.docker.com/compose/):**
-   ```
+
+   ```bash
    docker compose up --build
    ```
 
